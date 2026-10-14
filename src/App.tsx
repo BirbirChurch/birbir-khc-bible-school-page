@@ -34,6 +34,8 @@ import {
   syncGradesToFirestore,
   syncPasswordsToFirestore,
   syncPhotosToFirestore,
+  syncChurchLogoToFirestore,
+  loadChurchLogoFromFirestore,
   FirebaseConnectionReport
 } from './services/firebaseSync.ts';
 
@@ -164,11 +166,8 @@ export default function App() {
         if (report.status === 'connected') {
           // Check remote branding logo
           try {
-            const { doc, getDoc } = await import('firebase/firestore');
-            const { db } = await import('./firebase.ts');
-            const brandSnap = await getDoc(doc(db, '_system_settings', 'branding'));
-            if (brandSnap.exists() && brandSnap.data()?.churchLogo) {
-              const remoteLogo = brandSnap.data()?.churchLogo;
+            const remoteLogo = await loadChurchLogoFromFirestore();
+            if (remoteLogo) {
               setChurchLogo(remoteLogo);
               saveChurchLogo(remoteLogo);
             }
@@ -283,13 +282,7 @@ export default function App() {
     setChurchLogo(newLogo);
     saveChurchLogo(newLogo);
     showNotification('የቤተ ክርስቲያኑ አርማና ሎጎ በተሳካ ሁኔታ ተቀይሯል!', 'success');
-    try {
-      const { doc, setDoc } = await import('firebase/firestore');
-      const { db } = await import('./firebase.ts');
-      await setDoc(doc(db, '_system_settings', 'branding'), { churchLogo: newLogo, updatedAt: new Date().toISOString() }, { merge: true });
-    } catch (err) {
-      console.warn('Firebase logo sync note:', err);
-    }
+    await syncChurchLogoToFirestore(newLogo);
   };
 
   // Save changes to localStorage and Firestore

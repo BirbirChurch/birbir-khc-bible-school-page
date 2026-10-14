@@ -246,3 +246,24 @@ export async function pushAllStateToFirestore(payload: {
     return { success: false, error: err?.message || String(err) };
   }
 }
+
+export async function syncChurchLogoToFirestore(logo: string) {
+  try {
+    await setDoc(doc(db, '_system_settings', 'branding'), { churchLogo: logo, updatedAt: new Date().toISOString() }, { merge: true });
+  } catch (e) {
+    console.warn('Error saving church logo to Firestore:', e);
+  }
+}
+
+export async function loadChurchLogoFromFirestore(): Promise<string | null> {
+  try {
+    const brandSnap = await getDoc(doc(db, '_system_settings', 'branding'));
+    if (brandSnap.exists() && brandSnap.data()?.churchLogo) {
+      return brandSnap.data()?.churchLogo;
+    }
+  } catch (e) {
+    console.warn('Error loading church logo from Firestore:', e);
+  }
+  return null;
+}
+
