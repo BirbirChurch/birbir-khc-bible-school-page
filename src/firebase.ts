@@ -3,12 +3,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyDhtugGra6StAb_-DRmYKJBaumdPlK-y04",
-  authDomain: "birbir-khc-bible-school-page.firebaseapp.com",
-  projectId: "birbir-khc-bible-school-page",
-  storageBucket: "birbir-khc-bible-school-page.firebasestorage.app",
-  messagingSenderId: "576895642986",
-  appId: "1:576895642986:web:89b6f1922a37f671ec8913"
+  apiKey: "AIzaSyBYYL0yx9T7M5v9L5ZoQjWVBj-cJJwMCi4",
+  authDomain: "birbir-town-khc-bible-school.firebaseapp.com",
+  projectId: "birbir-town-khc-bible-school",
+  storageBucket: "birbir-town-khc-bible-school.firebasestorage.app",
+  messagingSenderId: "1056057220752",
+  appId: "1:1056057220752:web:1c6caf86b0e1bdc34b4215"
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
